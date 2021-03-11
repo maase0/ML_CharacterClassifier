@@ -3,6 +3,7 @@ input/
 .vscode/
 etlcdb-image-extractor/
 Input/
+venv/
 
 *.pkl*
 *.zip
