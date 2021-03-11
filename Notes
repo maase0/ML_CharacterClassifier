@@ -1,0 +1,9 @@
+Method 1
+Just a 3000 class classifier
+
+Method 2
+3000 binary classifiers
+
+Method 3
+Add another label to each character based on a radical to split into smaller
+classes, then do method 1 or two on those smaller classes.
