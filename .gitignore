@@ -1,0 +1,9 @@
+input/
+.ipynb_checkpoints/
+.vscode/
+etlcdb-image-extractor/
+Input/
+
+*.pkl*
+*.zip
+*.png
