@@ -5,6 +5,9 @@ etlcdb-image-extractor/
 Input/
 venv/
 
+extractor/
+Testing/
+ETL_data_set_folder
 *.pkl*
 *.zip
 *.png
