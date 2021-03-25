@@ -7,7 +7,7 @@ venv/
 
 extractor/
 Testing/
-ETL_data_set_folder
+Etl_kanji/
 *.pkl*
 *.zip
 *.png
