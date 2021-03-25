@@ -8,6 +8,8 @@ venv/
 extractor/
 Testing/
 Etl_kanji/
+Data/
+__pycache__/
 *.pkl*
 *.zip
 *.png
