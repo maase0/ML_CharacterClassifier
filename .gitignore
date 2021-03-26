@@ -10,6 +10,8 @@ Testing/
 Etl_kanji/
 Data/
 __pycache__/
+models/
+Output/
 *.pkl*
 *.zip
 *.png
