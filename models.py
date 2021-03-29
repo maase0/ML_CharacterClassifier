@@ -5,8 +5,11 @@ def get_M6_2(num_classes):
     
     model = tf.keras.models.Sequential([
         tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
-        tf.keras.layers.experimental.preprocessing.RandomRotation((-0.2,0.2), fill_mode='constant', fill_value=0),
-        tf.keras.layers.experimental.preprocessing.RandomZoom(height_factor=(0.0, 0.2), fill_mode='constant', fill_value=0),
+        tf.keras.layers.experimental.preprocessing.RandomRotation((-0.05,0.05), fill_mode='constant', fill_value=0),
+        tf.keras.layers.experimental.preprocessing.RandomZoom(height_factor=(0.0, 0.5), fill_mode='constant', fill_value=0),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(height_factor=(-0.1,0.1), width_factor=(-0.1,0.1), fill_mode='constant', fill_value=0),
+
+
         tf.keras.layers.Conv2D(input_shape=(64, 64, 1), kernel_size=3, activation='relu', filters=32, name="conv2D_1_1_input"),
         tf.keras.layers.Dropout(dropout),
         #tf.keras.layers.Dropout(0.25),
@@ -33,7 +36,7 @@ def get_M6_2(num_classes):
 
         #set the dtype to float32 for numerical stability
         tf.keras.layers.Softmax(dtype="float32", name="softmax_1_output") 
-    ], name="M7_1")
+    ], name="M6_2")
 
     return model
 
@@ -134,25 +137,37 @@ def get_M9(num_classes):
 
     model = tf.keras.models.Sequential([
         tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
-        tf.keras.layers.Conv2D(input_shape=(64, 64, 1), kernel_size=3, activation='relu', filters=64, name="conv2D_1_1_input"),
+        tf.keras.layers.experimental.preprocessing.RandomRotation((-0.05,0.05), fill_mode='constant', fill_value=0),
+        tf.keras.layers.experimental.preprocessing.RandomZoom(height_factor=(0.0, 0.5), fill_mode='constant', fill_value=0),
+        tf.keras.layers.experimental.preprocessing.RandomTranslation(height_factor=(-0.1,0.1), width_factor=(-0.1,0.1), fill_mode='constant', fill_value=0),
+
+        tf.keras.layers.Conv2D(input_shape=(64, 64, 1), kernel_size=3,  filters=64, name="conv2D_1_1_input", padding='valid'),
+        #tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
         tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_1"),
-
-        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=128, name="conv2D_2_1"),
         tf.keras.layers.Dropout(dropout),
+
+
+        tf.keras.layers.Conv2D(kernel_size=3, filters=128, name="conv2D_2_1", padding='valid'),
+        #tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
         tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_2"),
-
-        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=256, name="conv2D_3_1"),
         tf.keras.layers.Dropout(dropout),
-        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=256, name="conv2D_3_2"),
+
+        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=256, name="conv2D_3_1", padding='valid'),
+        tf.keras.layers.Conv2D(kernel_size=3,  filters=256, name="conv2D_3_2"),
+        #tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
+        #tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_3"),
         tf.keras.layers.Dropout(dropout),
-        tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_3"),
 
-        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=512, name="conv2D_4_1"),
-        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=512, name="conv2D_4_2"),
-
+        tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=512, name="conv2D_4_1", padding='valid'),
+        tf.keras.layers.Conv2D(kernel_size=3, filters=512, name="conv2D_4_2"),
+        #tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Activation('relu'),
         tf.keras.layers.Dropout(dropout),
-        #tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_4"),
-
+        tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=2, name="maxpool_4"),
+        tf.keras.layers.Dropout(dropout),
         #tf.keras.layers.Conv2D(kernel_size=3, activation='relu', filters=512, name="conv2D_4_2"),
 
         tf.keras.layers.Flatten(name="flatten"),
