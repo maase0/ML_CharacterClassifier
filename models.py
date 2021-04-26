@@ -1,6 +1,12 @@
 import tensorflow as tf
 import tensorflow.keras.layers as layers
 
+
+
+
+
+
+
 def get_M6_2(num_classes):
     dropout = 0.5
     
@@ -133,6 +139,63 @@ def get_M7_2(num_classes):
     ], name="M7_2")
 
     return model
+
+
+def get_BinaryClassifier(num_classes, dropout=0.5):
+
+    model = tf.keras.models.Sequential(name='M9')
+
+    model.add(layers.experimental.preprocessing.Rescaling(1./255))
+    model.add(layers.experimental.preprocessing.RandomRotation((-0.05,0.05), fill_mode='constant', fill_value=0))
+    model.add(layers.experimental.preprocessing.RandomZoom(height_factor=(0.0, 0.5), fill_mode='constant', fill_value=0))
+    model.add(layers.experimental.preprocessing.RandomTranslation(height_factor=(-0.1,0.1), width_factor=(-0.1,0.1), fill_mode='constant', fill_value=0))
+
+
+    model.add(layers.Conv2D(input_shape=(64, 64, 1), kernel_size=3,  filters=64))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.MaxPool2D(pool_size=(2, 2), strides=2))
+    
+    
+    model.add(layers.Conv2D(filters=128, kernel_size=3))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+    model.add(layers.MaxPool2D(pool_size=(2, 2), strides=2))
+
+
+    model.add(layers.Conv2D(filters=256, kernel_size=3))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+
+    model.add(layers.Conv2D(filters=256, kernel_size=3))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.MaxPool2D(pool_size=(2, 2), strides=2))
+
+
+
+    model.add(layers.Conv2D(filters=512, kernel_size=3))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+    model.add(layers.Conv2D(filters=512, kernel_size=3))
+    #model.add(layers.BatchNormalization())
+    model.add(layers.Activation('relu'))
+    #model.add(layers.BatchNormalization())
+    #model.add(layers.MaxPool2D(pool_size=(2, 2), strides=2))
+
+
+
+    model.add(layers.Flatten())
+    model.add(layers.Dropout(dropout))
+    model.add(layers.Dense(4096))
+    model.add(layers.Dropout(dropout))
+
+    model.add(layers.Dense(num_classes))
+
+    return model
+
 
 
 def get_M9(num_classes, dropout=0.5):
